@@ -395,3 +395,5 @@ test-report.xml
 
 yarn.lock
 package-lock.json
+
+outputDir/
