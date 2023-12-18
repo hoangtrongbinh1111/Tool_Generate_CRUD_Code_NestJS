@@ -1,0 +1,8 @@
+
+import { EntityRepository, Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { {{entityName_capital}} } from 'src/databases/entities/{{entityName}}.entity';
+
+@Injectable()
+@EntityRepository({{entityName_capital}})
+export class {{entityName_capital}}Repository extends Repository<{{entityName_capital}}> { }

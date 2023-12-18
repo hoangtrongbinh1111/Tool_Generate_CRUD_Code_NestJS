@@ -1,0 +1,21 @@
+import { ApiProperty } from "@nestjs/swagger";
+import { Type } from "class-transformer";
+import { IsBoolean, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+
+export class getDetail{{entityName_capital}}Dto {
+  @ApiProperty({ required: true })
+  @Type(() => Number)
+  @IsNumber()
+  {{entityName}}Id: number;
+}
+
+export class create{{entityName_capital}}Dto {
+  
+}
+
+export class update{{entityName_capital}}Dto {
+  @ApiProperty({ required: true })
+  @Type(() => Number)
+  @IsNumber()
+  {{entityName}}Id: number;
+}

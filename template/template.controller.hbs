@@ -1,0 +1,48 @@
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthenticationGuard } from 'src/auth/guards/auth.guard';
+import { getDetail{{entityName_capital}}Dto, create{{entityName_capital}}Dto, update{{entityName_capital}}Dto } from './dto/{{entityName}}-dto.dto';
+import { listAllGeneralDto } from 'src/helper/general.dto';
+import { {{entityName_capital}}Service } from './{{entityName}}.service';
+
+@ApiTags('{{entityName}}')
+@Controller('{{entityName}}')
+
+@UseGuards(AuthenticationGuard)
+@ApiBearerAuth()
+export class {{entityName_capital}}Controller {
+  constructor(
+    private readonly {{entityName}}Service: {{entityName_capital}}Service
+  ) { }
+
+  @Post('create')
+  async create{{entityName_capital}}(
+    @Body() payload: create{{entityName_capital}}Dto
+  ) {
+    return this.{{entityName}}Service.create{{entityName_capital}}(payload);
+  }
+
+  @Get('list-all')
+  async listAll{{entityName_capital}}(@Query() payload: listAllGeneralDto) {
+    return this.{{entityName}}Service.listAll{{entityName_capital}}(payload);
+  }
+
+  @Get('detail')
+  async getDetail{{entityName_capital}}(@Query() payload: getDetail{{entityName_capital}}Dto) {
+    return this.{{entityName}}Service.getDetail{{entityName_capital}}(payload);
+  }
+
+  @Post('update')
+  async update{{entityName_capital}}(
+    @Body() payload: update{{entityName_capital}}Dto
+  ) {
+    return await this.{{entityName}}Service.update{{entityName_capital}}(
+      payload
+    );
+  }
+
+  @Post('delete')
+  async delete{{entityName_capital}}(@Query() payload: getDetail{{entityName_capital}}Dto) {
+    return this.{{entityName}}Service.delete{{entityName_capital}}(payload);
+  }
+}

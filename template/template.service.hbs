@@ -1,0 +1,80 @@
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { getDetail{{entityName_capital}}Dto, create{{entityName_capital}}Dto, update{{entityName_capital}}Dto } from './dto/{{entityName}}-dto.dto';
+import { listAllGeneralDto } from 'src/helper/general.dto';
+import { {{entityName_capital}}Repository } from './{{entityName}}.repository';
+
+@Injectable()
+export class {{entityName_capital}}Service {
+  constructor(
+    private readonly {{entityName}}Repository: {{entityName_capital}}Repository,
+  ) { }
+  async create{{entityName_capital}}(input: create{{entityName_capital}}Dto) {
+    try {
+      const new{{entityName_capital}}Data = await this.{{entityName}}Repository.create(input).save();
+      return new{{entityName_capital}}Data;
+    } catch (error) {
+      throw new BadRequestException('Có lỗi xảy ra!');
+    }
+  }
+
+  async listAll{{entityName_capital}}(payload: listAllGeneralDto) {
+    const { search, limit, page, sort, sortOrder } = payload;
+    const list{{entityName_capital}} = this.{{entityName}}Repository
+      .createQueryBuilder('q_self')
+      .select('q_self.*')
+      .limit(limit)
+      .offset(limit * (page - 1));
+
+    if (sort) {
+      list{{entityName_capital}}.orderBy(`q_self.${sort}`, sortOrder.toUpperCase() as 'ASC' | 'DESC')
+    }
+    if (search) {
+      /**
+       * params: 
+       *  - name: string
+       *  - description: string
+       */
+      list{{entityName_capital}}.andWhere(
+        '( q_self.name LIKE :search OR q_self.description LIKE :search )',
+        { search: `%${search}%` }
+      );
+    }
+    try {
+      const [data, total] = await Promise.all([
+        list{{entityName_capital}}.getRawMany(),
+        list{{entityName_capital}}.getCount()
+      ]);
+
+      return { data, total };
+    } catch (error) {
+      throw new BadRequestException('Có lỗi xảy ra!');
+    }
+  }
+
+  async getDetail{{entityName_capital}}(payload: getDetail{{entityName_capital}}Dto) {
+    const { {{entityName}}Id } = payload;
+    const {{entityName}}Item = await this.{{entityName}}Repository.findOne({{entityName}}Id);
+    return {{entityName}}Item;
+  }
+
+  async update{{entityName_capital}}(payload: update{{entityName_capital}}Dto) {
+    const find{{entityName_capital}}ById = await this.{{entityName}}Repository.findOne(payload.{{entityName}}Id);
+    if (!find{{entityName_capital}}ById) {
+      throw new BadRequestException("{{entityName_capital}}_is_not_exist");
+    }
+    const updatedItem = { ...find{{entityName_capital}}ById, ...payload };
+    const {{entityName}}Data = await this.{{entityName}}Repository.save(updatedItem);
+    return {{entityName}}Data;
+  }
+
+  async delete{{entityName_capital}}(payload: getDetail{{entityName_capital}}Dto) {
+    const { {{entityName}}Id } = payload;
+    const {{entityName}}Item = await this.{{entityName}}Repository.findOne({{entityName}}Id);
+    if (!{{entityName}}Item) {
+      throw new BadRequestException("{{entityName_capital}}_is_not_exist");
+    }
+    const {{entityName}}DataDeleted = await this.{{entityName}}Repository.remove({{entityName}}Item);
+    return {{entityName}}DataDeleted;
+  }
+
+}
