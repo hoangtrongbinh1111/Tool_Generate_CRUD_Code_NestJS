@@ -4,6 +4,7 @@ import { AuthenticationGuard } from 'src/auth/guards/auth.guard';
 import { getDetail{{entityName_capital}}Dto, create{{entityName_capital}}Dto, update{{entityName_capital}}Dto } from './dto/{{entityName}}-dto.dto';
 import { listAllGeneralDto } from 'src/helper/general.dto';
 import { {{entityName_capital}}Service } from './{{entityName}}.service';
+import { responseSuccess, responseSuccessWithData, responseServerError } from 'src/helper/response.interceptor';
 
 @ApiTags('{{entityName}}')
 @Controller('{{entityName}}')
@@ -19,30 +20,38 @@ export class {{entityName_capital}}Controller {
   async create{{entityName_capital}}(
     @Body() payload: create{{entityName_capital}}Dto
   ) {
-    return this.{{entityName}}Service.create{{entityName_capital}}(payload);
+    const { status, message, data } = await this.{{entityName}}Service.create{{entityName_capital}}(payload);
+    if (!status) return responseServerError(message);
+    return responseSuccessWithData(data);
   }
 
   @Get('list-all')
   async listAll{{entityName_capital}}(@Query() payload: listAllGeneralDto) {
-    return this.{{entityName}}Service.listAll{{entityName_capital}}(payload);
+    const { status, message, data } = await this.{{entityName}}Service.listAll{{entityName_capital}}(payload);
+    if (!status) return responseServerError(message);
+    return responseSuccessWithData(data);
   }
 
   @Get('detail')
   async getDetail{{entityName_capital}}(@Query() payload: getDetail{{entityName_capital}}Dto) {
-    return this.{{entityName}}Service.getDetail{{entityName_capital}}(payload);
+    const { status, message, data } = await this.{{entityName}}Service.getDetail{{entityName_capital}}(payload);
+    if (!status) return responseServerError(message);
+    return responseSuccessWithData(data);
   }
 
   @Post('update')
   async update{{entityName_capital}}(
     @Body() payload: update{{entityName_capital}}Dto
   ) {
-    return await this.{{entityName}}Service.update{{entityName_capital}}(
-      payload
-    );
+    const { status, message, data } = await this.{{entityName}}Service.update{{entityName_capital}}(payload);
+    if (!status) return responseServerError(message);
+    return responseSuccessWithData(data);
   }
 
   @Post('delete')
   async delete{{entityName_capital}}(@Query() payload: getDetail{{entityName_capital}}Dto) {
-    return this.{{entityName}}Service.delete{{entityName_capital}}(payload);
+    const { status, message, data } = await this.{{entityName}}Service.delete{{entityName_capital}}(payload);
+    if (!status) return responseServerError(message);
+    return responseSuccessWithData(data);
   }
 }

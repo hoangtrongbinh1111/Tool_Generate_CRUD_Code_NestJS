@@ -1,21 +1,40 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsBoolean, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from "class-validator";
 
 export class getDetail{{entityName_capital}}Dto {
   @ApiProperty({ required: true })
   @Type(() => Number)
+  @IsNotEmpty()
   @IsNumber()
   {{entityName}}Id: number;
 }
 
 export class create{{entityName_capital}}Dto {
-  
+  // here is my example
+  @ApiProperty({ required: true })
+  @Type(() => String)
+  @IsString()
+  @IsNotEmpty({ message: 'Type your validation here!' })
+  {{entityName}}Name: string;
+
+  @ApiProperty({ required: false })
+  @IsDateString()
+  @IsOptional()
+  date: Date;
+
+  @ApiProperty({ required: true })
+  @Type(() => Number)
+  @IsNumber()
+  @IsNotEmpty({ message: 'Type your validation here!' })
+  @Min(0, { message: 'Type your validation here!' })
+  count: number;
 }
 
 export class update{{entityName_capital}}Dto {
   @ApiProperty({ required: true })
   @Type(() => Number)
+  @IsNotEmpty({ message: 'Type your validation here!' })
   @IsNumber()
   {{entityName}}Id: number;
 }
